@@ -4,7 +4,14 @@
 - Header
 - Routing App
 - LogIn form
-- ign Form
+- Sign Form
+- useRef hooks
+- Validation using Regex
+- firebase setup 
+- deployement our app on the firebase
+- Create sign up in firebase
+- create a Sign In as well
+- set up a redux and redux-toolkit
 
 
 
