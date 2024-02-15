@@ -7,12 +7,15 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "../Utils/firebase";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [isSignInForm, setisSignInForm] = useState(true);
   const [checked, setchecked] = useState(true);
   const [ErrorMessageIn, setErrorMessageIn] = useState(null);
   const [ErrorMessageUp, setErrorMessageUp] = useState(null);
+
+  const navigate = useNavigate();
 
   const name = useRef(null);
   const email = useRef(null);
@@ -39,7 +42,8 @@ const Login = () => {
         .then((userCredential) => {
           // Signed up
           const user = userCredential.user;
-          console.log(user);
+          // console.log(user);
+          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -64,12 +68,14 @@ const Login = () => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log(user);
+        // console.log(user);
+        navigate("/browse");
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode + "-" + errorMessage);
+        setErrorMessageIn(errorCode + "-" + errorMessage);
       });
   };
 
@@ -151,43 +157,80 @@ const Login = () => {
           {ErrorMessageUp === "Password is not Match" ? ErrorMessageUp : null}
         </p>
         {isSignInForm ? (
-          <button
-            className="bg-red-900 m-2 px-3 py-2 rounded-md w-full"
-            onClick={() => handleClickSignInBtn()}
-          >
-            Sign In
-          </button>
+          <>
+            <button
+              className="bg-red-900 m-2 px-3 py-2 rounded-md w-full"
+              onClick={() => handleClickSignInBtn()}
+            >
+              Sign In
+            </button>
+            <p>
+              {ErrorMessageIn ===
+              "auth/invalid-credential-Firebase: Error (auth/invalid-credential)." ? (
+                <p className="text-red-600 font-bold ml-10 text-lg">
+                  Your Are Not Registered!!
+                </p>
+              ) : null}
+            </p>
+          </>
         ) : (
-          <button
-            className="bg-red-900 m-2 px-3 py-2 rounded-md w-full"
-            onClick={() => handleClickSignUpBtn()}
-          >
-            Register
-          </button>
+          <>
+            <button
+              className="bg-red-900 m-2 px-3 py-2 rounded-md w-full"
+              onClick={() => handleClickSignUpBtn()}
+            >
+              Register
+            </button>
+            <p>
+              {ErrorMessageIn ===
+              "auth/email-already-in-use-Firebase: Error (auth/email-already-in-use)." ? (
+                <p className="text-green-400-600 font-bold ml-10 text-lg">
+                  Your Are All Ready Registered
+                </p>
+              ) : null}
+            </p>
+          </>
         )}
         {isSignInForm ? (
-          <p className="text-white px-16">Forget password?</p>
+          <p className="text-white px-16 cursor-pointer hover:underline">
+            Forget password?
+          </p>
         ) : null}
         {isSignInForm ? (
-          <label className="text-white mx-2 p-2">
-            <input type="checkbox" checked={checked} onChange={handleChecked} />{" "}
+          <label className="text-white mx-2 p-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={checked}
+              onChange={handleChecked}
+              className=""
+            />{" "}
             Remember me
           </label>
         ) : null}
         {isSignInForm ? (
-          <p
-            className="cursor-pointer text-[#E1D9D1] px-2"
-            onClick={() => setisSignInForm(false)}
-          >
-            New to Netflix? Sign up now.
-          </p>
+          <>
+            <p className=" text-[#E1D9D1] px-2 inline-flex">
+              New to Netflix?{" "}
+              <p
+                className="cursor-pointer text-[#E1D9D1] px-2 hover:underline font-bold"
+                onClick={() => setisSignInForm(false)}
+              >
+                Sign up now.
+              </p>
+            </p>
+          </>
         ) : (
-          <p
-            className="cursor-pointer text-[#E1D9D1] px-2"
-            onClick={() => setisSignInForm(true)}
-          >
-            Already Registerd? Sign In Now.
-          </p>
+          <>
+            <p className=" text-[#E1D9D1] px-2 inline-flex ">
+              Already Registerd?
+              <p
+                className="cursor-pointer text-[#E1D9D1] px-2 hover:underline font-bold"
+                onClick={() => setisSignInForm(true)}
+              >
+                Sign in now.
+              </p>
+            </p>
+          </>
         )}
       </form>
     </div>
