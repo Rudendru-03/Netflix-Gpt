@@ -1,12 +1,11 @@
 import React, { useState, useRef } from "react";
-import Header from "./Header";
-import { BACKGROUND_IMG } from "../Constant";
-import { checkValidateSignUp, checkValidateSignIn } from "../Utils/Validate";
+import Header from "../Home/Header";
+import { checkValidateSignUp, checkValidateSignIn } from "../../Utils/Validate";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { auth } from "../Utils/firebase";
+import { auth } from "../../Utils/firebase";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -32,7 +31,6 @@ const Login = () => {
     setErrorMessageUp(ErrorMessageSignUP);
     if (ErrorMessageIn) return;
 
-    //Sign In or Sign Up
     if (!isSignInForm) {
       createUserWithEmailAndPassword(
         auth,
@@ -40,15 +38,13 @@ const Login = () => {
         password.current.value
       )
         .then((userCredential) => {
-          // Signed up
           const user = userCredential.user;
-          // console.log(user);
           navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          console.log(errorCode + "-" + errorMessage);
+          setErrorMessageUp(errorCode + "-" + errorMessage);
         });
     }
   };
@@ -66,15 +62,12 @@ const Login = () => {
       password.current.value
     )
       .then((userCredential) => {
-        // Signed in
         const user = userCredential.user;
-        // console.log(user);
         navigate("/browse");
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorCode + "-" + errorMessage);
         setErrorMessageIn(errorCode + "-" + errorMessage);
       });
   };
@@ -86,9 +79,6 @@ const Login = () => {
   return (
     <div>
       <Header />
-      <div className="absolute">
-        <img src={BACKGROUND_IMG} alt="bg-icon" />
-      </div>
       <form
         className="bg-black absolute p-12 w-3/12 mx-auto my-40 right-0 left-0 bg-opacity-75 rounded-md"
         onSubmit={(e) => e.preventDefault()}

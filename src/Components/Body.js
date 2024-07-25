@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Browse from "./Browse";
-import Login from "./Login";
+import Login from "./Auth/Login";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { auth } from "../Utils/firebase";
 import { onAuthStateChanged } from "firebase/auth";
@@ -13,15 +13,15 @@ const Body = () => {
   const appRoute = createBrowserRouter([
     {
       path: "/",
-      element: <Login />,
+      element: <Browse />,
       errorElement: <ErrorPage />,
     },
     {
       path: "/browse",
-      element: <Browse />,
+      element: <Login />,
     },
     {
-      path: "/error",
+      path: "error",
       errorElement: <ErrorPage />,
     },
   ]);
@@ -42,7 +42,6 @@ const Body = () => {
           })
         );
       } else {
-        // User is signed out
         dispatch(removeUser());
       }
     });
