@@ -6,7 +6,7 @@ import { auth } from "../Utils/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { addUser, removeUser } from "../Store/userSlice";
-import ErrorPage from "./Error";
+import ErrorPage from "./Error/Error";
 
 const Body = () => {
   const dispatch = useDispatch();
